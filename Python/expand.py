@@ -1,11 +1,27 @@
-r = 3
-c = 5
-min_i = 1
-max_c = 6
-min_slices = [{'i': 2, 'j': 1}, {'i': 1, 'j': 2}]
-max_slices = [{'i': 6, 'j': 1}, {'i': 3, 'j': 2}, {'i': 2, 'j': 3}, {'i': 1, 'j': 6}, {'i': 3, 'j': 1}]
-pizza = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]
-pizza_sliced = [[0, 1, 2, 3, 0], [0, 1, 2, 3, 0], [0, 0, 0, 0, 0]]
+# from json import loads
+import json
+
+data = json.load(open("data/connect.json"))
+# data = '{"rows":3,"columns":5,"min":1,"maxCells":6,"map":[[0,0,0,0,0],[0,1,1,1,0],[0,0,0,0,0]],"shapes":[{"i":1,"j":2},{"i":2,"j":1}],"pizzaSliced":null}'
+# data = loads(data)
+# print(data)
+r = data['rows']
+c = data['columns']
+min_i = data['min']
+max_c = data['maxCells']
+# min_slices = data['shapes']
+pizza = data['map']
+pizza_sliced = data['pizzaSliced']
+max_slices = data['shapes']
+
+# r = 3
+# c = 5
+# min_i = 1
+# max_c = 6
+# min_slices = [{'i': 2, 'j': 1}, {'i': 1, 'j': 2}]
+# max_slices = [{'i': 6, 'j': 1}, {'i': 3, 'j': 2}, {'i': 2, 'j': 3}, {'i': 1, 'j': 6}, {'i': 3, 'j': 1}]
+# pizza = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]
+# pizza_sliced = [[0, 1, 2, 3, 0], [0, 1, 2, 3, 0], [0, 0, 0, 0, 0]]
 expd = []
 
 def get_size(i, j):
