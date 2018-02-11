@@ -1,9 +1,13 @@
-r = 3
-c = 5
-min_i = 1
-max_c = 6
-min_slices = [{'i': 2, 'j': 1}, {'i': 1, 'j': 2}]
-pizza = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]
+from json import loads
+data = '{"rows":3,"columns":5,"min":1,"maxCells":6,"map":[[0,0,0,0,0],[0,1,1,1,0],[0,0,0,0,0]],"shapes":[{"i":1,"j":2},{"i":2,"j":1}],"pizzaSliced":null}'
+data = loads(data)
+print(data)
+r = data['rows']
+c = data['columns']
+min_i = data['min']
+max_c = data['maxCells']
+min_slices = data['shapes']
+pizza = data['map']
 pizza_sliced = [[0 for j in range(c)] for i in range(r)]
 part = 1
 
