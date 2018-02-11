@@ -1,6 +1,7 @@
 from json import loads
 import sys
-data = sys.argv[0]
+data = sys.argv[1][1:-1]
+# print(data)
 # data = '{"rows":3,"columns":5,"min":1,"maxCells":6,"map":[[0,0,0,0,0],[0,1,1,1,0],[0,0,0,0,0]],"shapes":[{"i":1,"j":2},{"i":2,"j":1}],"pizzaSliced":null}'
 data = loads(data)
 # print(data)

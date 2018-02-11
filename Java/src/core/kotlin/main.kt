@@ -4,6 +4,9 @@ import core.DataContainer
 import core.Shape
 import org.codehaus.jackson.map.ObjectMapper
 import java.lang.Exception
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 import java.util.*
 
 /**
@@ -44,5 +47,45 @@ fun runPython(dataContainer: DataContainer) {
         i++
     }
     dataContainer.pizzaSliced = sliced
-    println()
+    printResult(dataContainer)
+}
+
+fun printResult(dataContainer: DataContainer) {
+
+    val out = ArrayList<String>()
+    val found = ArrayList<Int>()
+    var largest = 0
+
+    found.add(0)
+    for (i in 0..dataContainer.pizzaSliced.size - 1) {
+
+        for (j in 0..dataContainer.pizzaSliced[i].size - 1) {
+
+            if (!found.contains(dataContainer.pizzaSliced[i][j])) {
+                found.add(dataContainer.pizzaSliced[i][j])
+                var end = findEnd(dataContainer, i, j)
+                out.add("$i $j " + end[0] + " " + end[1])
+                if (dataContainer.pizzaSliced[i][j] > largest)
+                    largest = dataContainer.pizzaSliced[i][j]
+            }
+        }
+    }
+
+    out.add(0, largest.toString())
+    out.forEach { println(it)
+    Files.write(Paths.get("data/submit/big.out"), (it + "\n").toByteArray(), StandardOpenOption.APPEND)}
+}
+
+fun findEnd(dataContainer: DataContainer, i: Int, j: Int): Array<Int> {
+
+    val slice = dataContainer.pizzaSliced[i][j]
+    var i_p = i
+    var j_p = j
+
+    try { while (dataContainer.pizzaSliced[i_p + 1][j_p] == slice) i_p++ }
+    catch (e: IndexOutOfBoundsException) {}
+    try { while (dataContainer.pizzaSliced[i_p][j_p + 1] == slice) j_p++ }
+    catch (e: IndexOutOfBoundsException) {}
+
+    return arrayOf(i_p, j_p)
 }
