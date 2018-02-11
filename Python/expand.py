@@ -2,9 +2,7 @@
 import json
 
 data = json.load(open("data/connect.json"))
-# data = '{"rows":3,"columns":5,"min":1,"maxCells":6,"map":[[0,0,0,0,0],[0,1,1,1,0],[0,0,0,0,0]],"shapes":[{"i":1,"j":2},{"i":2,"j":1}],"pizzaSliced":null}'
-# data = loads(data)
-# print(data)
+
 r = data['rows']
 c = data['columns']
 min_i = data['min']
@@ -22,7 +20,7 @@ max_slices = data['shapes']
 # max_slices = [{'i': 6, 'j': 1}, {'i': 3, 'j': 2}, {'i': 2, 'j': 3}, {'i': 1, 'j': 6}, {'i': 3, 'j': 1}]
 # pizza = [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]
 # pizza_sliced = [[0, 1, 2, 3, 0], [0, 1, 2, 3, 0], [0, 0, 0, 0, 0]]
-expd = []
+expd = set()
 
 def get_size(i, j):
 	val = pizza_sliced[i][j]
@@ -47,6 +45,7 @@ def could_parse(i, j, part, val):
 		l += 1
 	return True
 
+
 def parse(l, k, part, val):
 	i = l
 	while i - l < part['i']:
@@ -56,24 +55,28 @@ def parse(l, k, part, val):
 			j += 1
 		i += 1
 
+
+def srav(i, j, val, pie):
+	for slice_part in max_slices:
+		if pie['i'] <= slice_part['i'] and pie['j'] <= slice_part['j']:
+			l = i - abs(pie['i'] - slice_part['i'])
+			start_k = j - abs(pie['j'] - slice_part['j'])
+			while l <= i:
+				k = start_k
+				while k <= j:
+					if could_parse(l, k, slice_part, val):
+						parse(l, k, slice_part, val)
+						return
+					k += 1
+				l += 1
+
 for i in range(r):
 	for j in range(c):
 		val = pizza_sliced[i][j]
 		if val and val not in expd:
-			expd.append(val)
+			expd.add(val)
 			pie = get_size(i, j)
-			for slice_part in max_slices:
-				if pie['i'] <= slice_part['i'] and pie['j'] <= slice_part['j']:
-					l = i - abs(pie['i'] - slice_part['i'])
-					while l <= i:
-						k = j - abs(pie['j'] - slice_part['j'])
-						while k <= j:
-							if could_parse(l, k, slice_part, val):
-								parse(l, k, slice_part, val)
-								l = i + 1
-								break
-							k += 1
-						l += 1
+			srav(i, j, val, pie)
 
 for i in range(r):
 	for j in range(c):
